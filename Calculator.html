@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .calculator {
+            background-color: #c7c7c7;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            padding-top: 10px;
+            padding-bottom: 30px;
+        }
+
+        .heading {
+            text-align: center;
+            user-select: none;
+        }
+
+        /* .answer {
+            height: 57px;
+            width: 300px;
+            font-size: 25px;
+            border: 2px solid black;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            text-align: right;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        } */
+
+        .answer {
+            /* display: flex;
+            justify-content: center;
+            align-items: center; */
+            height: 57px;
+            width: 300px;
+            font-size: 25px;
+            font-weight: bold;
+            border: 2px solid black;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            /* text-align: right; */
+            overflow: hidden;
+            /* overflow-x: auto; */
+            /* -webkit-overflow-scrolling: touch; */
+            direction: ltr;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            grid-gap: 10px;
+            width: 300px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        .grid-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffb03b;
+            color: rgb(0, 0, 0);
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .grid-item:hover {
+            background-color: #45a049;
+        }
+        
+        .grid-item:active {
+            background-color: #388e3c;
+        }
+
+        .grid-item-0 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #00ac0b;
+            color: rgb(0, 0, 0);
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .grid-item-0:hover {
+            background-color: #4eff57;
+        }
+        
+        .grid-item-0:active {
+            background-color: #ff2323;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="calculator">
+        <div class="heading">
+            <h1>Simple Calculator</h1>
+        </div>
+
+        <div class="answer">
+            <div class="operation-box"></div>
+            <div class="ans-box"></div>
+        </div>
+
+        <div class="container">
+            <button class="grid-item" onclick="ac();">AC</button>
+            <button class="grid-item" onclick="keyPress('*');">×</button>
+            <button class="grid-item" onclick="keyPress('/');">/</button>
+            <button class="grid-item" onclick="keyPress('-');">-</button>
+            <button class="grid-item" onclick="keyPress('7');">7</button>
+            <button class="grid-item" onclick="keyPress('8');">8</button>
+            <button class="grid-item" onclick="keyPress('9');">9</button>
+            <button class="grid-item" onclick="keyPress('+');">+</button>
+            <button class="grid-item" onclick="keyPress('4');">4</button>
+            <button class="grid-item" onclick="keyPress('5');">5</button>
+            <button class="grid-item" onclick="keyPress('6');">6</button>
+            <button class="grid-item-0" onclick="calculate();">=</button>
+            <button class="grid-item" onclick="keyPress('1');">1</button>
+            <button class="grid-item" onclick="keyPress('2');">2</button>
+            <button class="grid-item" onclick="keyPress('3');">3</button>
+            <button class="grid-item" onclick="keyPress('0');">0</button>
+        </div>
+    </div>
+
+    <script>
+
+        let array = [''];
+
+        function keyPress(key) {
+            if(document.querySelector('.operation-box').innerText.length == 24){
+                return
+            }
+            // console.log(key);
+            // let str = document.querySelector('.operation-box').innerText;
+            console.log(`Elements: ${array}`);
+            if ((array[0] === '') && (key === '+' || key === '-' || key === '*' || key === '/')) {
+                // console.log('Blank Symbol');
+            }
+            else if ((array[0] === '+' || array[0] == '-' || array[0] == '*' || array[0] == '/') && (key === '+' || key == '-' || key == '*' || key == '/')) {
+                // console.log('Double Symbol');
+            }
+            else if (array[1] == 'ans' && (key === '+' || key === '-' || key === '*' || key === '/')) {
+                document.querySelector('.operation-box').innerHTML = array[0] + key;
+            }
+            else {
+                // console.log(document.querySelector('.operation-box').innerText + key);
+                document.querySelector('.operation-box').innerText += key;
+            }
+            array.unshift(key);
+        }
+        function calculate() {
+            let str = document.querySelector('.operation-box').innerText;
+            // console.log(str);
+            // console.log(eval(str));
+            document.querySelector('.ans-box').innerText = eval(str);
+            array = [];
+            array[0] = eval(str);
+            array[1] = 'ans';
+        }
+        function ac() {
+            document.querySelector('.operation-box').innerHTML = '';
+            document.querySelector('.ans-box').innerHTML = '';
+            array = [''];
+        }
+
+        document.addEventListener('keydown', function(event) {
+            // console.log(event.key);
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                calculate();
+            }
+            else if(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/'].includes(event.key)){
+                keyPress(event.key);
+            }
+            else if(event.key === 'Delete'){
+                ac();
+            }
+            else if(event.key === 'Backspace'){
+                event.preventDefault();
+                document.querySelector('.operation-box').innerText = document.querySelector('.operation-box').innerText.slice(0, -1);
+                array.shift();
+                // console.log(`Elements: ${array}`);
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
